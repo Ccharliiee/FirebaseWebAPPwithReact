@@ -14,7 +14,7 @@ function App() {
     setErrorState(null);
     try {
       const starWarsMoviesResponse = await fetch(
-        "https://swapi.dev/api/films/"
+        "https://AAI-3UO4zcRBg-AYO9Gu.firebaseio.com/movies.json"
       ).then((Response) => {
         if (!Response.ok) {
           throw new Error(Response.status);
@@ -41,9 +41,19 @@ function App() {
     fetchMoviesHandler();
   }, [fetchMoviesHandler]);
 
-  function addMovieHandler(movie) {
-    console.log(movie);
-  }
+  const addMovieHandler = async (movie) => {
+    console.log("movie: " + movie);
+    const addMovieResponse = await fetch(
+      "https://AAI-3UO4zcRBg-AYO9Gu.firebaseio.com/movies.json",
+      {
+        method: "Post",
+        body: JSON.stringify(movie),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const addMovieResponseJson = await addMovieResponse.json();
+    console.log("addMovieResponseJson: " + addMovieResponseJson);
+  };
 
   let content = <p>Found no movies.</p>;
 
