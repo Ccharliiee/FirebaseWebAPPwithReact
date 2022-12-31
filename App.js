@@ -21,14 +21,16 @@ function App() {
         }
         return Response.json();
       });
-      const moviesFormated = starWarsMoviesResponse.results.map((movie) => {
-        return {
-          id: movie.episode_id,
-          title: movie.title,
-          releaseDate: movie.release_date,
-          openingText: movie.opening_crawl,
-        };
-      });
+      const moviesFormated = Object.entries(starWarsMoviesResponse).map(
+        (movie) => {
+          return {
+            id: movie[0],
+            title: movie[1].title,
+            releaseDate: movie[1].releaseDate,
+            openingText: movie[1].openingText,
+          };
+        }
+      );
       setMoviesState(moviesFormated);
       setIsLoading(false);
     } catch (error) {
@@ -42,7 +44,7 @@ function App() {
   }, [fetchMoviesHandler]);
 
   const addMovieHandler = async (movie) => {
-    console.log("movie: " + movie);
+    console.log("movie: " + Object.entries(movie));
     const addMovieResponse = await fetch(
       "https://AAI-3UO4zcRBg-AYO9Gu.firebaseio.com/movies.json",
       {
@@ -52,7 +54,9 @@ function App() {
       }
     );
     const addMovieResponseJson = await addMovieResponse.json();
-    console.log("addMovieResponseJson: " + addMovieResponseJson);
+    console.log(
+      "addMovieResponseJson: " + Object.entries(addMovieResponseJson)
+    );
   };
 
   let content = <p>Found no movies.</p>;
